@@ -48,6 +48,11 @@ services:
         echo 'Sonar scanner is not set properly'
         exit 1;
       fi;
+      echo "###########################################";
+      echo $SONAR_PROJECT_KEY;
+      echo $SONAR_PROJECT_TOKEN;
+      echo "###########################################";
+      exit 1;
       sonar-scanner \
         -Dsonar.host.url=http://sonarqube:9000 \
         -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
@@ -55,4 +60,4 @@ services:
         -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
         -Dsonar.testExecutionReportPaths=testResults/test-report.xml"
     volumes:
-      - ${TARGET_PROJECT_LOCAL_PATH}
+      - ../node-service-template:/usr/src
