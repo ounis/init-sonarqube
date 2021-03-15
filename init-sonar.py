@@ -8,7 +8,7 @@ from tqdm import tqdm
 url = 'http://sonarqube:9000'
 username = "admin"
 default_password = "admin"
-password = os.getenv("SONAR_PASSWORD", "adminadmin")
+password = os.getenv("SONAR_PASSWORD", "password")
 project = os.getenv("SONAR_PROJECT_KEY", "generic-project")
 
 started = False
@@ -38,7 +38,12 @@ while not started:
             result = sonar.user_tokens.generate_user_token(f"{project}-token")
             user_token = result["token"]
             f = open("/tmp/.env", "a")
-            f.write(f"\nSONAR_PROJECT_KEY=\"{project}\"\nSONAR_PROJECT_TOKEN=\"{user_token}\"\n")
+            if project is "generic-project":
+                print(project)
+                print(project == "generic-project")
+                f.write(f"\nSONAR_PROJECT_KEY=\"{project}\"")
+            print(project)
+            f.write(f"\nSONAR_PROJECT_TOKEN=\"{user_token}\"\n")
             f.close()
         started = True
         pbar.set_description(f"Sonar started: {started}")

@@ -10,6 +10,11 @@ ifeq (,$(wildcard .env))
 endif
 
 reset:
+	make init
 	docker-compose rm -f -s -v
-	rm .env
 	make
+
+rmi:
+	make init
+	docker-compose down --remove-orphans -v --rmi "all"
+	rm -f .env

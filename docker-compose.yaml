@@ -26,15 +26,17 @@ services:
 
 
   init-sonar:
-    build:
-      dockerfile: Dockerfile
-      context: .
+    image: python
     env_file:
       - .env
-    command: python init-sonar.py
+    command: |
+      bash -c "
+      pip install python-sonarqube-api tqdm;
+      python /app/init-sonar.py"
     depends_on:
       - sonarqube
     volumes:
+      - ./init-sonar.py:/app/init-sonar.py:ro
       - .env:/tmp/.env
 
 
