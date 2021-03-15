@@ -55,4 +55,4 @@ services:
         -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
         -Dsonar.testExecutionReportPaths=testResults/test-report.xml"
     volumes:
-      - ${TARGET_PROJECT_LOCAL_PATH}
+      - ${TARGET_PROJECT_LOCAL_PATH}:/app/src
