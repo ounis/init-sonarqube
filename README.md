@@ -1,4 +1,4 @@
-# Initialize
+# Run
 
 ```
 make
