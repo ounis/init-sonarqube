@@ -1,0 +1,58 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: "sonar"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "password"
+    ports:
+      - 5432:5432
+
+
+  sonarqube:
+    image: sonarqube
+    restart: always
+    environment:
+      SONARQUBE_JDBC_URL: "jdbc:postgresql://postgres:5432/sonar"
+      SONARQUBE_JDBC_USERNAME: "postgres"
+      SONARQUBE_JDBC_PASSWORD: "password"
+    ports:
+      - 9000:9000
+    depends_on:
+      - postgres
+
+
+  init-sonar:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    env_file:
+      - .env
+    command: python init-sonar.py
+    depends_on:
+      - sonarqube
+    volumes:
+      - .env:/tmp/.env
+
+
+  sonar-scanner:
+    image: sonarsource/sonar-scanner-cli
+    env_file:
+      - .env
+    command: |
+      bash -c "
+      if [ -z ${SONAR_PROJECT_KEY} ] || [ -z ${SONAR_PROJECT_TOKEN} ]; then
+        echo 'Sonar scanner is not set properly'
+        exit 1;
+      fi;
+      sonar-scanner \
+        -Dsonar.host.url=http://sonarqube:9000 \
+        -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
+        -Dsonar.login=${SONAR_PROJECT_TOKEN} \
+        -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
+        -Dsonar.testExecutionReportPaths=testResults/test-report.xml"
+    volumes:
+      - ${TARGET_PROJECT_LOCAL_PATH}
