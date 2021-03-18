@@ -44,15 +44,14 @@ services:
       - .env
     command: |
       bash -c "
-      if [ -z ${SONAR_PROJECT_KEY} ] || [ -z ${SONAR_PROJECT_TOKEN} ]; then
+      if [ -z ${SONAR_URL} ] || [ -z ${SONAR_PROJECT_KEY} ] || [ -z ${SONAR_PROJECT_TOKEN} ]; then
         echo 'Sonar scanner is not set properly'
         exit 1;
       fi;
       sonar-scanner \
-        -Dsonar.host.url=http://sonarqube:9000 \
+        -Dsonar.host.url=${SONAR_URL} \
         -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
         -Dsonar.login=${SONAR_PROJECT_TOKEN} \
-        -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
-        -Dsonar.testExecutionReportPaths=testResults/test-report.xml"
+        -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info"
     volumes:
       - ${TARGET_PROJECT_LOCAL_PATH}:/usr/src

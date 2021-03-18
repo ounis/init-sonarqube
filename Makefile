@@ -7,6 +7,7 @@ init:
 ifeq (,$(wildcard .env))
 	touch .env
 	echo "TARGET_PROJECT_LOCAL_PATH=/tmp" >> .env
+	echo "SONAR_URL=http://sonarqube:9000 >> .env
 endif
 
 reset:
