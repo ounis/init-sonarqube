@@ -38,10 +38,7 @@ while not started:
             user_token = result["token"]
             f = open("/tmp/.env", "a")
             if project == "generic-project":
-                print(project)
-                print(project == "generic-project")
                 f.write(f"\nSONAR_PROJECT_KEY=\"{project}\"")
-            print(project)
             f.write(f"\nSONAR_PROJECT_TOKEN=\"{user_token}\"\n")
             f.close()
         started = True

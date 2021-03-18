@@ -52,6 +52,8 @@ services:
         -Dsonar.host.url=${SONAR_URL} \
         -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
         -Dsonar.login=${SONAR_PROJECT_TOKEN} \
-        -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info"
+        -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info \
+        -Dsonar.inclusions='src/**/*.js, src/**/*.ts' \
+        -Dsonar.exclusions='src/**/*.test.ts'"
     volumes:
       - ${TARGET_PROJECT_LOCAL_PATH}:/usr/src
